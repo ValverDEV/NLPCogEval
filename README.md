@@ -1,0 +1,1 @@
+Repositorio para las pruebas de la Evaluación Cognitiva utilizando NLP, con un enfoque condicional.
