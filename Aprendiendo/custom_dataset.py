@@ -10,10 +10,10 @@ import json
 # #### Establecemos la metadata del dataset
 
 _DESCRIPTION = 'CSV secundaria para NLP'
-_URL = 'https://github.com/ValverDEV/NLPCogEval/tree/main/datasets/'
+_URL = 'https://raw.githubusercontent.com/ValverDEV/NLPCogEval/main/datasets/JSON/'
 _URLS = {
-    'train':  _URL + 'pelota_plata_train.json?=raw',
-    'test':  _URL + 'pelota_plata_test.json?=raw'
+    'train':  _URL + 'pelota_plata_train.json',
+    'test':  _URL + 'pelota_plata_test.json'
 }
 _CITATION = ''
 
@@ -51,25 +51,25 @@ class NLP(datasets.GeneratorBasedBuilder):
             citation=_CITATION
         )
 
-        def _split_generators(self, dl_manager):
-            downloaded_files = dl_manager.download_and_extract(_URL)
+    def _split_generators(self, dl_manager):
+        downloaded_files = dl_manager.download_and_extract(_URLS)
 
-            return [
-                datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={
-                                        'filepath': downloaded_files['train']}),
-                datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={
-                                        'filepath': downloaded_files['test']}),
-            ]
+        return [
+            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={
+                                    'filepath': downloaded_files['train']}),
+            datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={
+                                    'filepath': downloaded_files['test']}),
+        ]
 
-        def _generate_examples(self, filepath):
-            logger.info(f'generating examples from, {filepath}')
-            with open(filepath, encoding='latin1') as f:
-                datos = json.load(f)
-                for respuesta in datos:
-                    answer = respuesta['answer']
-                    label = respuesta['label']
+    def _generate_examples(self, filepath):
+        logger.info(f'generating examples from, {filepath}')
+        with open(filepath, encoding='latin1') as f:
+            datos = json.load(f)['data']
+            for respuesta in datos:
+                answer = respuesta['answer']
+                label = respuesta['label']
 
-                    yield id_, {
-                        'answer': answer,
-                        'label': label
-                    }
+                yield _id, {
+                    'answer': answer,
+                    'label': label
+                }
