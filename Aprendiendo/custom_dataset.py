@@ -64,9 +64,9 @@ class NLP(datasets.GeneratorBasedBuilder):
 
     def _generate_examples(self, filepath):
         logger.info(f'generating examples from, {filepath}')
-        with open(filepath, encoding='latin1') as f:
+        with open(filepath) as f:
             datos = json.load(f)['data']
-            print(datos[0])
+            print(datos[0]['id'])
             for respuesta in datos:
                 print('\n\n\n\n')
                 print(respuesta)
