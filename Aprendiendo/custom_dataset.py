@@ -44,7 +44,7 @@ class NLP(datasets.GeneratorBasedBuilder):
             description=_DESCRIPTION,
             features=datasets.Features(
                 {
-                    'id': datasets.Value('string'),
+                    'uq': datasets.Value('string'),
                     'answer': datasets.Value('string'),
                     'label': datasets.Value('bool')
                 }
@@ -66,14 +66,13 @@ class NLP(datasets.GeneratorBasedBuilder):
         logger.info(f'generating examples from, {filepath}')
         with open(filepath) as f:
             datos = json.load(f)['data']
-            print(datos[0]['id'])
             for respuesta in datos:
                 print('\n\n\n\n')
                 print(respuesta)
                 print('\n\n\n\n')
                 answer = respuesta['answer']
                 label = respuesta['label']
-                id_ = respuesta['id']
+                id_ = respuesta['uq']
 
                 yield id_, {
                     'answer': answer,
